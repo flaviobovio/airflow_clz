@@ -1,10 +1,10 @@
-***  Instalación AIRFLOW   ***
+**  Instalación AIRFLOW   **
 
 https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html
 
 
 
-***  Dar acceso a la Base de MySQL desde el contenedor  ***
+**  Dar acceso a la Base de MySQL desde el contenedor  **
 1) Ensure MySQL is Listening on All Interfaces:
 
 Check if MySQL is configured to listen to external connections.
@@ -29,5 +29,10 @@ Finally, reload the permissions, and you should be able to have remote access:
 FLUSH PRIVILEGES;
 
 
+** Microsoft SQL Server **
+# usar tds_version='7.0' en string connection
+
+import pymssql
+conn = pymssql.connect(server='192.168.2.111', user='am', password='dl', database='omicronvt', tds_version='7.0')
 
 

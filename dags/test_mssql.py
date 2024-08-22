@@ -4,7 +4,7 @@ from datetime import datetime
 import pyodbc
 
 def connect_to_mssql():
-    conn_str = 'DRIVER={ODBC Driver 17 for SQL Server};SERVER=your_server;DATABASE=your_database;UID=your_user;PWD=your_password'
+    conn_str = 'DRIVER={ODBC Driver 18 for SQL Server};SERVER=192.168.2.111;DATABASE=msgestion01;UID=am;PWD=dl'
     conn = pyodbc.connect(conn_str)
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM your_table')

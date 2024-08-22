@@ -1,14 +1,24 @@
 FROM apache/airflow:2.10.0
 
+# Set environment variables
+ENV AIRFLOW__WEBSERVER__EXPOSE_CONFIG=True
+ENV AIRFLOW__CORE__TEST_CONNECTION=Enabled
+
 USER root
 
-# Install dependencies
-RUN apt-get update && \
-    apt-get install -y unixodbc-dev curl gnupg && \
-    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-    curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
-    apt-get update && \
-    ACCEPT_EULA=Y apt-get install -y msodbcsql17
+#update package list
+RUN apt update 
+
+#install fretds for MSSQL
+RUN apt install freetds-bin 
+
+#install ping and telnet for debugging
+RUN apt install freetds-bin iputils-ping telnet
 
 USER airflow
-RUN pip install pyodbc
+
+# MSSQL
+RUN pip install apache-airflow-providers-microsoft-mssql pymssql
+
+# MySQL 
+RUN pip install pymysql
