@@ -3,6 +3,7 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
 import pymssql
 from datetime import timedelta
+from .functions import connections
 
 # Define the DAG
 default_args = {
@@ -22,16 +23,16 @@ dag = DAG(
 
 
 def guarda_stock_diario():
-
-    conn = pymssql.connect(server='192.168.2.111', user='am', password='dl', database='', tds_version='7.0' )
+    
+    conn = pymssql.connect(**connections.ms_sql)
     cursor = conn.cursor()
     query = """
-    INSERT INTO omicronvt.dbo.t_stock_histo_depo_diario 
-    SELECT deposito
-        , SUM(stock_actual) as stock
-        , CAST(GETDATE() AS DATE) AS fecha 
-    FROM msgestionC.dbo.stock 
-    GROUP BY deposito
+        INSERT INTO omicronvt.dbo.t_stock_histo_depo_diario 
+        SELECT deposito
+            , SUM(stock_actual) as stock
+            , CAST(GETDATE() AS DATE) AS fecha 
+        FROM msgestionC.dbo.stock 
+        GROUP BY deposito
     """
     cursor.execute(query)
 
