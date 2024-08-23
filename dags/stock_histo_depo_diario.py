@@ -3,14 +3,14 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
 import pymssql
 from datetime import timedelta
-from .functions import connections
+from functions import connections
 
 
 # Define the DAG
 default_args = {
     'owner': 'airflow',
-    'retries': 0,
-    'retry_delay': timedelta(minutes=5),
+    'retries': 1,
+    'retry_delay': timedelta(minutes=10),
 }
 
 dag = DAG(
@@ -27,13 +27,27 @@ def guarda_stock_diario():
     
     conn = pymssql.connect(**connections.ms_sql())
     cursor = conn.cursor()
+
+    # Check previous data does no exist 
+    query = """
+        SELECT COUNT(*), CAST(GETDATE() AS DATE)
+            FROM omicronvt.dbo.t_stock_histo_depo_diario
+            WHERE fecha = CAST(GETDATE() AS DATE)
+    """
+    cursor.execute(query)
+    results = cursor.fetchone()
+    if results[0] > 0:
+        raise Exception(f'Ya existen registros con fecha {results[1]}')
+
+
+    # Insert data
     query = """
         INSERT INTO omicronvt.dbo.t_stock_histo_depo_diario 
-        SELECT deposito
-            , SUM(stock_actual) as stock
-            , CAST(GETDATE() AS DATE) AS fecha 
-        FROM msgestionC.dbo.stock 
-        GROUP BY deposito
+            SELECT deposito
+                , SUM(stock_actual) as stock
+                , CAST(GETDATE() AS DATE) AS fecha 
+            FROM msgestionC.dbo.stock 
+            GROUP BY deposito
     """
     cursor.execute(query)
 
