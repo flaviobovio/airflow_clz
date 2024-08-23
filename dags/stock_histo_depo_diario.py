@@ -5,6 +5,7 @@ import pymssql
 from datetime import timedelta
 from .functions import connections
 
+
 # Define the DAG
 default_args = {
     'owner': 'airflow',
@@ -24,7 +25,7 @@ dag = DAG(
 
 def guarda_stock_diario():
     
-    conn = pymssql.connect(**connections.ms_sql)
+    conn = pymssql.connect(**connections.ms_sql())
     cursor = conn.cursor()
     query = """
         INSERT INTO omicronvt.dbo.t_stock_histo_depo_diario 
