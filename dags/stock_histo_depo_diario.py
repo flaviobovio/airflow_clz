@@ -25,14 +25,13 @@ def guarda_stock_diario():
 
     conn = pymssql.connect(server='192.168.2.111', user='am', password='dl', database='', tds_version='7.0' )
     cursor = conn.cursor()
-
     query = """
-    INSERT INTO omicronvt.dbo.t_stock_histo_depo_diario
-        (SELECT deposito
-            , SUM(stock_actual) as stock
-            , CAST(GETDATE() AS DATE) AS fecha 
-        FROM msgestionC.dbo.stock 
-        GROUP BY deposito)
+    INSERT INTO omicronvt.dbo.t_stock_histo_depo_diario 
+    SELECT deposito
+        , SUM(stock_actual) as stock
+        , CAST(GETDATE() AS DATE) AS fecha 
+    FROM msgestionC.dbo.stock 
+    GROUP BY deposito
     """
     cursor.execute(query)
 
