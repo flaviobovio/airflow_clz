@@ -13,7 +13,7 @@ RUN apt update
 RUN apt install freetds-bin 
 
 #install ping and telnet for debugging
-RUN apt install freetds-bin iputils-ping telnet
+RUN apt install iputils-ping telnet
 
 USER airflow
 
