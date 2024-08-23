@@ -11,14 +11,14 @@ default_args = {
     'owner': 'airflow',
     'retries': 1,
     'retry_delay': timedelta(minutes=10),
-    'start_date': datetime(2024, 8, 24, 2, 0), # 02:00AM
+    'start_date': datetime(2024, 8, 24, 2),
 }
 
 dag = DAG(
     'stock_histo_depo_diario',
     default_args=default_args,
     description='Guarda stock histórico diario x depósito',
-    schedule_interval='@daily',
+    schedule_interval='0 2 * * *', # 02:00 AM
     start_date=days_ago(1),
     catchup=False,
 )

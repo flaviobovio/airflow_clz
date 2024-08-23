@@ -1,8 +1,8 @@
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
-from datetime import datetime
 import pymssql
+import pymysql
 from functions import connections
 
 
@@ -20,19 +20,35 @@ def test_mssql():
         # Establish the connection
         connection = pymssql.connect(**connections.ms_sql())
         # Connection successful if no exception is raised
-        print("Connection successful!")
+        print("Connection to MS SQL Server successful!")
         connection.close()
     except pymssql.DatabaseError as e:
-        print(f"Database connection failed: {e}")
+        print(f"Database connection to MS SQL Server failed: {e}")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred connecting to MySQL Server: {e}")
+
+
+def test_mssql():
+    try:
+        # Establish the connection
+        connection = pymysql.connect(**connections.my_sql())
+        # Connection successful if no exception is raised
+        print("Connection to MySQL Server successful!")
+        connection.close()
+    except pymssql.DatabaseError as e:
+        print(f"Database connection to MySQL Server failed: {e}")
+    except Exception as e:
+        print(f"An error occurred connecting to MySQL Server : {e}")
+
+
 
 
 dag = DAG(
-    'mssql_test',
+    'sql_connections_tests',
     default_args=default_args,
-    description='Test connection to MS SQL Server',
-    schedule_interval='@once',    
+    description='Test connections to MS SQL & MySQL',
+    schedule_interval='@once',
+    start_date=days_ago(1),    
 )
 
 test_mssql = PythonOperator(
@@ -41,4 +57,14 @@ test_mssql = PythonOperator(
     dag=dag,
 )
 
-test_mssql
+
+test_mysql = PythonOperator(
+    task_id='test_mysql_connection',
+    python_callable=test_mysql,
+    dag=dag,
+)
+
+
+
+
+test_mssql >> test_mysql
