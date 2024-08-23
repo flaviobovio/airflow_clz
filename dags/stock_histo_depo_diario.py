@@ -2,7 +2,7 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
 import pymssql
-from datetime import timedelta
+from datetime import datetime, timedelta
 from functions import connections
 
 
@@ -11,6 +11,7 @@ default_args = {
     'owner': 'airflow',
     'retries': 1,
     'retry_delay': timedelta(minutes=10),
+    'start_date': datetime(2024, 8, 24, 2, 0), # 02:00AM
 }
 
 dag = DAG(
