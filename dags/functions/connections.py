@@ -1,6 +1,13 @@
 def ms_sql(database=''):
     """ Connection parameters for the Microsoft SQL Server
 
+    Usage example: 
+        import pymssql
+
+        from functions.connections import ms_sql
+
+        conn = pymssql.connect(**ms_sql())
+
     Args:
         database (str, optional): Database schema, Defaults to ''
 
@@ -22,6 +29,13 @@ def ms_sql(database=''):
 def my_sql(database=''):
     """ Connection parameters for the MySQL Server
 
+    Usage example: 
+        import pymysql
+
+        from functions.connections import my_sql
+        
+        conn = pymssql.connect(**my_sql())
+
     Args:
         database (str, optional): Database schema, Defaults to ''
 
@@ -29,7 +43,7 @@ def my_sql(database=''):
         dict: Connection parameters
     """
     connection_string = {
-        'server': '192.168.2.106',
+        'host': '192.168.2.106',
         'user': 'airflow',
         'password': 'airflow',
         'database': database,

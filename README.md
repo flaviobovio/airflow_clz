@@ -2,6 +2,10 @@
 
 https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html
 
+#### Dockerfile ####
+Customized packages and configuration in Dockerfile
+
+
 
 ###  Giving access to  MySQL database from container  ###
 
@@ -33,7 +37,7 @@ If however you do want any/all systems to connect via root, use the % wildcard t
 #### Connection to DB ####
 
     import pymysql
-    conn = pymysql.connect(server='your_server', user='your_user', password='your_password', database='your_database')
+    conn = pymysql.connect(host='your_host', user='your_user', password='your_password', database='your_database')
 
 
 

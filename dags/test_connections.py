@@ -25,10 +25,10 @@ def test_mssql():
     except pymssql.DatabaseError as e:
         print(f"Database connection to MS SQL Server failed: {e}")
     except Exception as e:
-        print(f"An error occurred connecting to MySQL Server: {e}")
+        print(f"An error occurred connecting to MS SQL Server: {e}")
 
 
-def test_mssql():
+def test_mysql():
     try:
         # Establish the connection
         connection = pymysql.connect(**connections.my_sql())

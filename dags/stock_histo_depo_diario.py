@@ -3,7 +3,7 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.utils.dates import days_ago
 import pymssql
 from datetime import datetime, timedelta
-from functions import connections
+from functions.connections import ms_sql
 
 
 # Define the DAG
@@ -18,7 +18,7 @@ dag = DAG(
     'stock_histo_depo_diario',
     default_args=default_args,
     description='Guarda stock histórico diario x depósito',
-    schedule_interval='0 2 * * *', # 02:00 AM
+    schedule_interval='0 4 * * *', # 04:00 AM
     start_date=days_ago(1),
     catchup=False,
 )
@@ -26,7 +26,7 @@ dag = DAG(
 
 def guarda_stock_diario():
     
-    conn = pymssql.connect(**connections.ms_sql())
+    conn = pymssql.connect(**ms_sql())
     cursor = conn.cursor()
 
     # Check previous data does no exist 
