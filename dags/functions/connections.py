@@ -16,9 +16,9 @@ def ms_sql(database=''):
     """
 
     connection_string = {
-        'server': '192.168.2.111',
-        'user': 'am',
-        'password': 'dl',
+        'server': '192.168.1.100', # Your Server IP
+        'user': 'user1',
+        'password': 'pwd1',
         'database': database,
         'tds_version': '7.0'
     }    
@@ -43,7 +43,7 @@ def my_sql(database=''):
         dict: Connection parameters
     """
     connection_string = {
-        'host': '192.168.2.106',
+        'host': '192.168.1.150', # Your Server IP
         'user': 'airflow',
         'password': 'airflow',
         'database': database,
